@@ -25,6 +25,16 @@ class TestCrossReference extends Simulation {
 
   val testfile = csv("test-data.txt").circular
 
+  val base = scenario("Get Hello World")
+    .during(30) {
+    exec(
+      http("Get Base Request")
+        .get("/")
+        .check(status.is(200))
+    )
+    // .pause(0 milliseconds, 1 milliseconds)
+  }
+
   val scn = scenario("Cross Reference via Unmanaged Extension")
     .during(30) {
     feed(testfile)
@@ -38,7 +48,10 @@ class TestCrossReference extends Simulation {
   }
 
 
+
+
   setUp(
+    //base.users(16).protocolConfig(httpConf)
     scn.users(16).protocolConfig(httpConf)
   )
 }
